@@ -6,7 +6,7 @@ YUM_VERSION_REGEX="-[0-9]\{8\}-[0-9]*.*"
 function get_plugin_path_from_package_name {
         #DEBIAN dpkg-query -L centreon-plugin-network-cisco-standard-snmp | tail -1
         #RHEL rpm -ql centreon-plugin-network-cisco-standard-snmp
-        [[ $(/usr/bin/env grep -q "Debian" /etc/os-release) ]] && bin="dpkg-query -L $1 | tail -1" || bin="rpm -ql $1"
+        $(/usr/bin/env grep -q "Debian" /etc/os-release) && bin="dpkg-query -L $1 | tail -1" || bin="rpm -ql $1"
         echo "$bin" | bash
 }
 function create_menu_mode {
@@ -23,7 +23,7 @@ function create_menu_mode {
 function get_current_plugin_version {
         #DEBIAN dpkg-query -S /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
         #RHEL rpm -qf /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
-        [[ $(/usr/bin/env grep -q "Debian" /etc/os-release) ]] && bin="dpkg-query -S $1 | tail -1" || bin="rpm -qf $1"
+        $(/usr/bin/env grep -q "Debian" /etc/os-release) && bin="dpkg-query -S $1 | tail -1" || bin="rpm -qf $1"
         echo "$bin" | bash
 }
 function get_latest_plugin_version {
