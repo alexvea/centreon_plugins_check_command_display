@@ -30,7 +30,7 @@ function get_latest_plugin_version {
         #DEBIAN dpkg-query -S /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
         #RHEL yum --showduplicates list /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
         PLUGIN_WITHOUT_VERSION=$(echo $1 | sed -e "s/${YUM_VERSION_REGEX}//g")
-        [[ $(/usr/bin/env grep -q "Debian" /etc/os-release) ]] && bin="dpkg -s ${PLUGIN_WITHOUT_VERSION} | grep -i version" || bin="yum --showduplicates list ${PLUGIN_WITHOUT_VERSION} | tail -1"
+        $(/usr/bin/env grep -q "Debian" /etc/os-release) && bin="dpkg -s ${PLUGIN_WITHOUT_VERSION} | grep -i version" || bin="yum --showduplicates list ${PLUGIN_WITHOUT_VERSION} | tail -1"
         echo "$bin" | bash
 }
 
