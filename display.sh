@@ -22,16 +22,16 @@ function create_menu_mode {
         done
 }
 function get_current_plugin_version {
-        #DEBIAN dpkg-query -S /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
+        #DEBIAN  dpkg -l | grep `dpkg -S /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl  | awk -F: '{ print $1 }'` | awk ' { print $2"-"$3} '
         #RHEL rpm -qf /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
-        $(/usr/bin/env grep -q "Debian" /etc/os-release) && bin="dpkg-query -S $1 | tail -1" || bin="rpm -qf $1"
+        $(/usr/bin/env grep -q "Debian" /etc/os-release) && bin="dpkg -l | grep `dpkg -S $1  | awk -F: '{ print $1 }'` | awk ' { print \$2\" \"\$3} '" || bin="rpm -qf $1"
         echo "$bin" | bash
 }
 function get_latest_plugin_version {
-        #DEBIAN dpkg-query -S /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
+        #DEBIAN apt-cache policy centreon-plugin-operatingsystems-as400-connector | grep Candidate
         #RHEL yum --showduplicates list /usr/lib/centreon/plugins/centreon_netapp_ontap_snmp.pl
         PLUGIN_WITHOUT_VERSION=$(echo $1 | sed -e "s/${YUM_VERSION_REGEX}//g" | sed -e "s/${APT_VERSION_REGEX}//g")
-        $(/usr/bin/env grep -q "Debian" /etc/os-release) && bin="dpkg -s ${PLUGIN_WITHOUT_VERSION} | grep -i version" || bin="yum --showduplicates list ${PLUGIN_WITHOUT_VERSION} | tail -1"
+        $(/usr/bin/env grep -q "Debian" /etc/os-release) && bin="apt-cache policy ${PLUGIN_WITHOUT_VERSION} | grep Candidate" || bin="yum --showduplicates list ${PLUGIN_WITHOUT_VERSION} | tail -1"
         echo "$bin" | bash
 }
 
