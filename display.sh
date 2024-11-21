@@ -2,7 +2,18 @@
 PLUGIN_PATH_REGEX="\/usr\/.*.pl"
 YUM_VERSION_REGEX="-[0-9]\{8\}-[0-9]*.*"
 APT_VERSION_REGEX=":$"
-[ -z "$1" ] && echo "No parameter" && exit
+
+help()
+{
+   # Display Help
+   echo
+   echo "The script allows you to get the help of centreon plugin and its mode, from the check command or the plugin package name."
+   echo "Example: ./display.sh /usr/lib/centreon/plugins/centreon_linux_snmp.pl"
+   echo "Example: ./display.sh centreon-plugin-Operatingsystems-Linux-Snmp"
+   echo
+}
+
+[ -z "$1" ] && help && exit
 
 function get_plugin_path_from_package_name {
         #DEBIAN dpkg-query -L centreon-plugin-network-cisco-standard-snmp | tail -1
